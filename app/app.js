@@ -33,7 +33,7 @@ app.get("/create-task",async (req,res)=>{
         console.error('Error creating table:', error);
     } finally {
         // Ensure that the connection pool is closed
-        await pool.end();
+        // await pool.end();
     }
     };
 
@@ -45,6 +45,7 @@ app.get("/create-task",async (req,res)=>{
 // Add a task
 app.post('/tasks', async (req, res) => {
     try {
+    //   const client = await pool.connect();
       const { description } = req.body;
       const result = await pool.query('INSERT INTO tasks (description) VALUES ($1) RETURNING *', [description]);
       res.json(result.rows[0]);
