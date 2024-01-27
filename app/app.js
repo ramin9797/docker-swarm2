@@ -12,6 +12,36 @@ const pool = new Pool({
   port: 5432,
 });
 
+
+app.get("create-task",async (req,res)=>{
+    // SQL query to create a "tasks" table
+    const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS tasks (
+        id SERIAL PRIMARY KEY,
+        description VARCHAR(255) NOT NULL
+    );
+    `;
+
+    // Function to execute the create table query
+    const createTable = async () => {
+    try {
+        const client = await pool.connect();
+        await client.query(createTableQuery);
+        console.log('Table "tasks" created successfully');
+        client.release();
+    } catch (error) {
+        console.error('Error creating table:', error);
+    } finally {
+        // Ensure that the connection pool is closed
+        await pool.end();
+    }
+    };
+
+    // Call the createTable function
+        createTable();
+})
+
+
 // Add a task
 app.post('/tasks', async (req, res) => {
     try {
