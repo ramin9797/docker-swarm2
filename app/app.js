@@ -13,7 +13,7 @@ const pool = new Pool({
 });
 
 
-app.get("create-task",async (req,res)=>{
+app.get("/create-task",async (req,res)=>{
     // SQL query to create a "tasks" table
     const createTableQuery = `
     CREATE TABLE IF NOT EXISTS tasks (
