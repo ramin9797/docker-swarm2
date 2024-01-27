@@ -33,7 +33,7 @@ services:
       - mynetwork
 
   nodeapp:
-    image: ramin9797/app6  # Замените на ваш образ Node.js-приложения
+    image: ramin9797/app7  # Замените на ваш образ Node.js-приложения
     deploy:
       replicas: 3
     depends_on:
