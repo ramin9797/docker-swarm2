@@ -48,7 +48,7 @@ app.get("/create-task",async (req,res)=>{
 app.post('/tasks', async (req, res) => {
     try {
     //   const client = await pool.connect();
-      const { description } = req.body;
+      const description = "Ramin";
       const result = await pool.query('INSERT INTO tasks (description) VALUES ($1) RETURNING *', [description]);
       res.json(result.rows[0]);
     } catch (error) {
