@@ -41,6 +41,8 @@ services:
       - postgres-slave
     networks:
       - mynetwork
+    ports:
+      - '3000:3000'  
 
 networks:
   mynetwork:
