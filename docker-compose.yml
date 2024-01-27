@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  postgres-master:
+    image: bitnami/postgresql:latest
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=my_repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=my_repl_password
+      - POSTGRES_USER=my_user
+      - POSTGRES_PASSWORD=my_password
+      - POSTGRES_DB=my_database
+    deploy:
+      replicas: 1
+    networks:
+      - mynetwork
+
+  postgres-slave:
+    image: bitnami/postgresql:latest
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_MASTER_HOST=postgres-master
+      - POSTGRESQL_REPLICATION_USER=my_repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=my_repl_password
+      - POSTGRES_USER=my_user
+      - POSTGRES_PASSWORD=my_password
+      - POSTGRES_DB=my_database
+    deploy:
+      replicas: 2
+    depends_on:
+      - postgres-master
+    networks:
+      - mynetwork
+
+  nodeapp:
+    image: ramin9797/app3  # Замените на ваш образ Node.js-приложения
+    deploy:
+      replicas: 3
+    depends_on:
+      - postgres-master
+      - postgres-slave
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: overlay
